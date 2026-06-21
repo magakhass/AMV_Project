@@ -8,7 +8,7 @@ obtain it.
 ## Obtaining the data
 
 1. Go to the DLD **Real Estate Transactions** dataset on Dubai Pulse
-   (`dubaipulse.gov.ae`, DLD organisation).
+   (`dubaipulse.gov.ae`, DLD organisation) OR download the same exact file from my drive: `https://drive.google.com/file/d/1bxcSQSp--lRPdEUJb1_z8vS-4MKZJ3Jc/view?usp=sharing`
 2. Download the CSV. The export is split into parts by size; a single part of
    ~1.3M Sales rows is more than enough for this project (the full set is not
    required).
