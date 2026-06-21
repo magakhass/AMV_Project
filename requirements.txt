@@ -1,0 +1,15 @@
+# Core data + modelling stack (install: pip install -r requirements.txt)
+pandas>=2.0
+numpy>=1.24
+pyarrow>=14.0 # parquet engine for the interim/processed files
+scikit-learn>=1.3
+pyyaml>=6.0
+
+# EDA / figures for the report
+matplotlib>=3.7
+seaborn>=0.12
+jupyter>=1.0
+
+# Models
+xgboost>=2.0
+tensorflow>=2.15

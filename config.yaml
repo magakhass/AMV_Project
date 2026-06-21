@@ -1,0 +1,75 @@
+# config.yaml is single source of truth for paths, parameters, and schema.
+# Nothing in src/ should hardcode a path or a column name; read it from here.
+
+seed: 42
+
+paths:
+  raw: data/raw/dld_transactions.csv # the full DLD export
+  interim: data/interim/sales_clean.parquet # Sales-only, typed
+  cleaned: data/interim/sales_cleaned.parquet # outliers/nulls handled
+  processed: data/processed/model_table.parquet
+  models: models/
+  figures: reports/figures/
+
+data:
+  target_col: actual_worth # transaction price in AED (main target)
+  alt_target_col: meter_sale_price  # price per m2 as alternative
+
+  # keep only this transaction group for price modelling
+  sales_filter:
+    column: trans_group_en
+    keep: "Sales" # drops Mortgages and Gifts
+
+  # row identifiers / system codes
+  id_cols:
+    - transaction_id
+    - procedure_id
+    - trans_group_id
+    - property_type_id
+    - property_sub_type_id
+    - reg_type_id
+    - area_id
+    - project_number
+
+  numeric_features:
+    - procedure_area # size in m2 
+    - has_parking # 0/1
+    - bedrooms # derived from rooms_en in preprocess
+
+  categorical_features: # English columns only
+    - property_type_en # land / unit / villa / building
+    - property_sub_type_en # flat / office / shop ...
+    - property_usage_en # residential / commercial / other
+    - reg_type_en # off-plan vs existing
+    - procedure_name_en # sell / pre-registration / delayed / lease-to-own
+    - rooms_en # kept as category (Penthouse/Office...);
+    - area_name_en # community (moderate-high cardinality)
+    - nearest_metro_en
+    - nearest_mall_en
+    - nearest_landmark_en
+
+  # available but high-cardinality, target/frequency encoding
+  optional_high_cardinality:
+    - building_name_en
+    - project_name_en
+    - master_project_en
+
+  # dropped in preprocess
+  drop_cols:
+    - rent_value # lease-to-own only means 100% null for Sales
+    - meter_rent_price # lease-to-own only means 100% null for Sales
+    - load_timestamp # ETL ingestion time: constant, no signal
+
+  date_col: instance_date # date split
+
+cleaning:
+  # junk rows
+  min_instance_year: 2008 # from EDA
+  min_price: 50000 # removes 1-AED placeholder rows
+  max_price: 100000000 
+  min_area: 10 # m2
+  max_area: 50000
+
+split:
+  strategy: temporal # split by instance_date, not random to avoid leakage
+  test_fraction: 0.2
