@@ -48,3 +48,25 @@ import pandas as pd
 
 `data/sample/` is kept under version control (see `.gitignore`); the full
 `data/raw`, `data/interim`, and `data/processed` folders are not.
+
+## Running tests
+
+This project uses `pytest` for automated tests.
+
+From the project root, run:
+
+```bash
+python -m pytest tests/
+```
+
+If `pytest` is not installed, install it first:
+
+```bash
+python -m pip install pytest
+```
+
+If you are using a virtual environment, activate it before running the command.
+
+### Notes
+- On Windows PowerShell, `python -m pytest` is preferred over running `pytest` directly.
+- The tests are designed to run on synthetic data and do not require the full dataset.
